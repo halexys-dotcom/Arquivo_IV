@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">Arquivo IV</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_home">Início</string>
+    <string name="nav_invoices">Faturas</string>
+    <string name="nav_settings">Definições</string>
+
+    <!-- Settings / About -->
+    <string name="settings_export">Exportar Dados</string>
+    <string name="settings_backups">Cópia de Segurança (Backups)</string>
+    <string name="settings_about">Sobre</string>
+    <string name="settings_about_description">Aplicação independente desenvolvida por Hugo Correia para arquivamento e consulta de faturas de fornecedores.</string>
+    <string name="settings_about_slogan">O seu arquivo digital de faturas</string>
+    <string name="settings_about_copyright">© HAConnect — Todos os direitos reservados</string>
+
+    <!-- Common actions -->
+    <string name="action_back">Voltar</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="action_edit">Editar</string>
+    <!-- Dashboard -->
+    <string name="dashboard_summary">Resumo</string>
+    <string name="dashboard_stat_total">Faturas Arquivadas</string>
+    <string name="dashboard_stat_suppliers">Fornecedores</string>
+    <string name="dashboard_stat_recent">Arquivadas 30d</string>
+    <string name="dashboard_recent_invoices">Últimas Faturas</string>
+    <string name="dashboard_empty_title">Nenhuma fatura arquivada</string>
+    <string name="dashboard_empty_subtitle">Toque no botão + para arquivar a primeira fatura!</string>
+
+    <!-- Invoice List -->
+    <string name="invoices_title">Faturas</string>
+    <string name="invoices_empty_title">Nenhuma fatura</string>
+    <string name="invoices_empty_subtitle">Toque no botão + para adicionar uma nova fatura</string>
+
+    <!-- Invoice Detail -->
+    <string name="invoice_detail_title">Detalhes da Fatura</string>
+    <string name="invoice_detail_not_found">Fatura não encontrada.</string>
+    <string name="invoice_field_fornecedor">Fornecedor</string>
+    <string name="invoice_field_numero">Nº da Fatura</string>
+    <string name="invoice_field_data_emissao">Data de Emissão</string>
+    <string name="invoice_field_anexo">Anexo</string>
+    <string name="invoice_detail_archived_on">Data de Arquivo</string>
+    <string name="invoice_open_attachment">Abrir anexo</string>
+    <string name="invoice_delete_confirm">Tem a certeza que deseja eliminar esta fatura e o respetivo anexo?</string>
+
+    <!-- Invoice Form -->
+    <string name="invoice_form_new_title">Nova Fatura</string>
+    <string name="invoice_form_ocr_reading">A ler fatura…</string>
+    <string name="invoice_form_auto_filled">Preenchido automaticamente — verifique</string>
+    <string name="invoice_form_edit_title">Editar Fatura</string>
+    <string name="invoice_form_save">Guardar</string>
+    <string name="invoice_form_attach_photo">Tirar foto</string>
+    <string name="invoice_form_attach_file">Escolher ficheiro</string>
+    <string name="invoice_form_remove_attachment">Remover anexo</string>
+    <string name="invoice_form_error_fornecedor">Indique o fornecedor.</string>
+    <string name="invoice_form_error_numero">Indique o nº da fatura.</string>
+    <string name="invoice_form_error_date_required">Selecione a data de emissão.</string>
+    <string name="invoice_form_error_date_future">A data não pode ser futura.</string>
+    <string name="invoice_form_error_attachment">Anexe uma foto ou um ficheiro PDF.</string>
+    <string name="invoice_form_camera_denied">Sem permissão da câmara não é possível tirar fotos. Conceda-a nas definições da aplicação.</string>
+    <string name="invoice_form_no_camera">Nenhuma câmara disponível neste dispositivo.</string>
+
+    <!-- Search (Fase 4) -->
+    <string name="search_title">Pesquisar</string>
+    <string name="search_hint_fornecedor">Pesquisar por fornecedor…</string>
+    <string name="search_de">De</string>
+    <string name="search_ate">Até</string>
+    <string name="search_limpar_filtros">Limpar filtros</string>
+    <string name="search_sem_resultados">Nenhuma fatura encontrada para estes critérios</string>
+    <string name="search_sem_resultados_hint">Tente outro fornecedor ou ajuste o intervalo de datas.</string>
+
+    <!-- Export -->
+    <string name="export_title">Exportar Dados</string>
+    <string name="export_heading">Exportar os seus dados</string>
+    <string name="export_description">Exporte todas as suas faturas para PDF ou CSV. O ficheiro será gerado e poderá ser partilhado.</string>
+    <string name="export_pdf_card_title">Documento PDF</string>
+    <string name="export_pdf_card_desc">Tabela formatada com todos os campos das faturas</string>
+    <string name="export_csv_card_title">Ficheiro CSV</string>
+    <string name="export_csv_card_desc">Compatível com Excel, Google Sheets, etc.</string>
+    <string name="export_btn_share">Partilhar</string>
+    <string name="export_info_title">Todas as faturas são exportadas</string>
+    <string name="export_info_desc">Inclui fornecedor, número, data e data de arquivo</string>
+    <string name="export_success">Exportação %1$s concluída com sucesso!</string>
+    <string name="export_empty">Não existem faturas para exportar.</string>
+
+        <!-- PDF Export -->
+    <string name="pdf_title">Arquivo IV — Exportação de Faturas</string>
+    <string name="export_pdf">Exportar PDF</string>
+    <string name="export_csv">Exportar CSV</string>
+    <string name="pdf_generated_on">Gerado em: %1$s</string>
+    <string name="pdf_header_fornecedor">Fornecedor</string>
+    <string name="pdf_header_numero">Nº Fatura</string>
+    <string name="pdf_header_data_emissao">Data de Emissão</string>
+    <string name="pdf_share_title">Partilhar exportação</string>
+
+    <!-- CSV Headers -->
+    <string name="csv_header_fornecedor">Fornecedor</string>
+    <string name="csv_header_numero">Nº Fatura</string>
+    <string name="csv_header_data_emissao">Data de Emissão</string>
+    <string name="csv_header_data_insercao">Data de Arquivo</string>
+    <!-- Notifications (Fase 5 — retenção legal de 5 anos) -->
+    <string name="notification_channel_name">Alertas de Retenção</string>
+    <string name="notification_channel_desc">Alertas quando as faturas atingem os 5 anos de retenção legal</string>
+    <string name="notification_retencao_30dias_title">Fatura perto dos 5 anos</string>
+    <string name="notification_retencao_30dias_body">A fatura %1$s de %2$s completa 5 anos em %3$d dias.</string>
+    <string name="notification_retencao_5anos_title">Fatura com 5 anos</string>
+    <string name="notification_retencao_5anos_body">A fatura %1$s de %2$s completou 5 anos em %3$s. Já pode arquivar a frio ou eliminar.</string>
+    <string name="notification_group_title">Retenção — faturas elegíveis</string>
+
+    <!-- FAB -->
+    <string name="fab_new_invoice">Nova Fatura</string>
+
+    <!-- Backups -->
+    <string name="backup_title">Backups Locais</string>
+    <string name="backup_create">Criar backup</string>
+    <string name="backup_import">Importar backup (.zip)</string>
+    <string name="backup_export">Exportar</string>
+    <string name="backup_restore">Restaurar</string>
+    <string name="backup_restore_confirm_title">Restaurar Backup</string>
+    <string name="backup_restore_confirm_msg">ATENÇÃO: Todos os dados atuais da aplicação serão SUBSTITUÍDOS pelos dados deste backup. Esta ação é destrutiva e irreversível.\n\nDeseja continuar?</string>
+    <string name="backup_delete_confirm_title">Eliminar Backup</string>
+    <string name="backup_delete_confirm_msg">Tem a certeza que deseja eliminar esta cópia de segurança?</string>
+    <string name="backup_schema_mismatch">O backup tem uma versão de esquema incompatível (versão %1$d vs atual %2$d). O restauro foi cancelado por segurança.</string>
+    <string name="backup_invalid_format">O ficheiro selecionado não é um backup válido do Arquivo IV.</string>
+    <string name="backup_storage_summary">%1$d backup(s) — %2$s ocupados</string>
+    <string name="backup_empty">Nenhum backup local encontrado.</string>
+    <string name="backup_creating">A criar cópia de segurança…</string>
+    <string name="backup_restoring">A restaurar cópia de segurança…</string>
+    <string name="backup_success">Backup criado com sucesso!</string>
+    <string name="backup_restore_success">Restauro concluído! A reiniciar a aplicação…</string>
+</resources>

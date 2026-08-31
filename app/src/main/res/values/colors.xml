@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#1B2A4A</color>
+    <color name="primary_dark">#0F1728</color>
+    <color name="primary_light">#3B5B9D</color>
+    <color name="secondary">#B8935A</color>
+    <color name="secondary_light">#D4B483</color>
+    <color name="surface">#FAFAFA</color>
+    <color name="background">#FFFFFF</color>
+    <color name="error">#D32F2F</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_surface">#212121</color>
+    <color name="warranty_active">#4CAF50</color>
+    <color name="warranty_expiring">#FF9800</color>
+    <color name="warranty_expired">#F44336</color>
+</resources>

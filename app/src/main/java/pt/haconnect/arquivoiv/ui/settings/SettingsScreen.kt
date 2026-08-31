@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.FolderZip
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.SystemUpdate
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -36,6 +37,7 @@ import pt.haconnect.arquivoiv.ui.theme.Primary
 fun SettingsScreen(
     onNavigateToExport: () -> Unit,
     onNavigateToBackup: () -> Unit,
+    onNavigateToUpdate: () -> Unit,
     onNavigateToAbout: () -> Unit
 ) {
 
@@ -72,6 +74,20 @@ fun SettingsScreen(
                     icon = Icons.Filled.FolderZip,
                     title = stringResource(R.string.settings_backups),
                     onClick = onNavigateToBackup,
+                    showChevron = true
+                )
+
+                HorizontalDivider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    thickness = 0.5.dp,
+                    color = MaterialTheme.colorScheme.outlineVariant
+                )
+
+                // Updates Item
+                SettingsListItem(
+                    icon = Icons.Filled.SystemUpdate,
+                    title = stringResource(R.string.settings_updates),
+                    onClick = onNavigateToUpdate,
                     showChevron = true
                 )
 

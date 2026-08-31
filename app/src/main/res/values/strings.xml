@@ -131,4 +131,25 @@
     <string name="backup_restoring">A restaurar cópia de segurança…</string>
     <string name="backup_success">Backup criado com sucesso!</string>
     <string name="backup_restore_success">Restauro concluído! A reiniciar a aplicação…</string>
+
+    <!-- Settings item -->
+    <string name="settings_updates">Atualizações</string>
+
+    <!-- Updates Screen -->
+    <string name="update_title">Atualizações</string>
+    <string name="update_installed_version">Versão instalada: %1$s</string>
+    <string name="update_check_now">Verificar agora</string>
+    <string name="update_checking">A verificar atualizações…</string>
+    <string name="update_up_to_date">A aplicação está atualizada.</string>
+    <string name="update_available_title">Nova versão disponível: %1$s</string>
+    <string name="update_release_notes">Notas de Lançamento</string>
+    <string name="update_download_and_install">Descarregar e instalar</string>
+    <string name="update_downloading">A descarregar atualização… %1$d%%</string>
+    <string name="update_install">Instalar atualização</string>
+    <string name="update_backup_recommendation_title">Aviso de Segurança</string>
+    <string name="update_backup_recommendation_msg">Recomenda-se criar uma cópia de segurança antes de atualizar a aplicação.</string>
+    <string name="update_go_to_backup">Criar backup agora</string>
+    <string name="update_permission_required">Para instalar atualizações fora da Play Store, é necessário permitir a instalação de aplicações desconhecidas nas Definições do sistema.</string>
+    <string name="update_open_settings">Abrir Definições</string>
+    <string name="update_open_github">Abrir no GitHub</string>
 </resources>

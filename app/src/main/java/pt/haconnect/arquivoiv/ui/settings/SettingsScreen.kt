@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.FileDownload
+import androidx.compose.material.icons.filled.FolderZip
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -34,6 +35,7 @@ import pt.haconnect.arquivoiv.ui.theme.Primary
 @Composable
 fun SettingsScreen(
     onNavigateToExport: () -> Unit,
+    onNavigateToBackup: () -> Unit,
     onNavigateToAbout: () -> Unit
 ) {
 
@@ -59,6 +61,20 @@ fun SettingsScreen(
                     showChevron = true
                 )
                 
+                HorizontalDivider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    thickness = 0.5.dp,
+                    color = MaterialTheme.colorScheme.outlineVariant
+                )
+
+                // Backups Item
+                SettingsListItem(
+                    icon = Icons.Filled.FolderZip,
+                    title = stringResource(R.string.settings_backups),
+                    onClick = onNavigateToBackup,
+                    showChevron = true
+                )
+
                 HorizontalDivider(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     thickness = 0.5.dp,

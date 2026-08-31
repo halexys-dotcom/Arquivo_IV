@@ -32,6 +32,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import pt.haconnect.arquivoiv.R
+import pt.haconnect.arquivoiv.ui.backup.BackupScreen
 import pt.haconnect.arquivoiv.ui.dashboard.DashboardScreen
 import pt.haconnect.arquivoiv.ui.fatura.FaturaDetailScreen
 import pt.haconnect.arquivoiv.ui.fatura.FaturaFormScreen
@@ -57,6 +58,7 @@ sealed class Screen(val route: String) {
     data object Pesquisa : Screen("pesquisa")
     data object Settings : Screen("settings")
     data object Export : Screen("export")
+    data object Backup : Screen("backup")
     data object About : Screen("about")
 }
 
@@ -238,6 +240,9 @@ fun ArquivoIVNavGraph(
                     onNavigateToExport = {
                         navController.navigate(Screen.Export.route)
                     },
+                    onNavigateToBackup = {
+                        navController.navigate(Screen.Backup.route)
+                    },
                     onNavigateToAbout = {
                         navController.navigate(Screen.About.route)
                     }
@@ -245,6 +250,11 @@ fun ArquivoIVNavGraph(
             }
             composable(Screen.Export.route) {
                 pt.haconnect.arquivoiv.ui.export.ExportScreen(
+                    onNavigateBack = { navController.popBackStack() }
+                )
+            }
+            composable(Screen.Backup.route) {
+                BackupScreen(
                     onNavigateBack = { navController.popBackStack() }
                 )
             }

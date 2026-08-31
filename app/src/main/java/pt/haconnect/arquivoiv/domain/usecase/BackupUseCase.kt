@@ -176,29 +176,57 @@ class BackupUseCase @Inject constructor(
 
     /**
      * Restaura os dados de um backup ZIP (BD e anexos) substituindo os dados atuais.
+     * Inclui mecanismo de salvaguarda (cópia temporária) para rollback automático em caso de falha.
      */
     suspend fun restaurarBackup(info: BackupInfo): BackupResult = withContext(Dispatchers.IO) {
+        // 1. Validar versão do esquema no manifest
+        if (info.schemaVersion != CURRENT_SCHEMA_VERSION) {
+            return@withContext BackupResult.Error(
+                "O backup tem uma versão de esquema incompatível (versão ${info.schemaVersion} vs atual $CURRENT_SCHEMA_VERSION)."
+            )
+        }
+
+        // 2. Executar checkpoint WAL para consolidar alterações antes de copiar
         try {
-            // 1. Validar versão do esquema no manifest
-            if (info.schemaVersion != CURRENT_SCHEMA_VERSION) {
-                return@withContext BackupResult.Error(
-                    "O backup tem uma versão de esquema incompatível (versão ${info.schemaVersion} vs atual $CURRENT_SCHEMA_VERSION)."
-                )
+            appDatabase.openHelper.writableDatabase.query("PRAGMA wal_checkpoint(FULL)").close()
+        } catch (e: Exception) {
+            Log.w("BackupUseCase", "Aviso no checkpoint WAL antes do restauro: ${e.message}")
+        }
+
+        val dbFile = context.getDatabasePath(DB_NAME)
+        val dbWal = context.getDatabasePath("$DB_NAME-wal")
+        val dbShm = context.getDatabasePath("$DB_NAME-shm")
+        val attachmentsDir = File(context.filesDir, DOCUMENTS_DIR).apply { if (!exists()) mkdirs() }
+
+        // 3. Criar cópia de segurança temporária dos dados atuais (para rollback se o restauro falhar)
+        val tempBackupDir = File(context.cacheDir, "temp_restore_backup_${System.currentTimeMillis()}").apply { mkdirs() }
+        val tempDbDir = File(tempBackupDir, "db").apply { mkdirs() }
+        val tempAttachmentsDir = File(tempBackupDir, "attachments").apply { mkdirs() }
+
+        try {
+            if (dbFile.exists()) dbFile.copyTo(File(tempDbDir, dbFile.name), overwrite = true)
+            if (dbWal.exists()) dbWal.copyTo(File(tempDbDir, dbWal.name), overwrite = true)
+            if (dbShm.exists()) dbShm.copyTo(File(tempDbDir, dbShm.name), overwrite = true)
+            if (attachmentsDir.exists()) {
+                attachmentsDir.listFiles()?.forEach { attachment ->
+                    if (attachment.isFile) attachment.copyTo(File(tempAttachmentsDir, attachment.name), overwrite = true)
+                }
             }
+        } catch (e: Exception) {
+            Log.e("BackupUseCase", "Erro ao criar cópia de salvaguarda temporária", e)
+            tempBackupDir.deleteRecursively()
+            return@withContext BackupResult.Error("Não foi possível criar a cópia de segurança temporária para o restauro: ${e.message}")
+        }
 
-            // 2. Fechar ligações à base de dados Room antes de substituir os ficheiros
-            try {
-                appDatabase.close()
-            } catch (e: Exception) {
-                Log.w("BackupUseCase", "Erro ao fechar BD para restauro: ${e.message}")
-            }
+        // 4. Fechar ligações à base de dados Room antes de substituir os ficheiros
+        try {
+            appDatabase.close()
+        } catch (e: Exception) {
+            Log.w("BackupUseCase", "Erro ao fechar BD para restauro: ${e.message}")
+        }
 
-            val dbFile = context.getDatabasePath(DB_NAME)
-            val dbWal = context.getDatabasePath("$DB_NAME-wal")
-            val dbShm = context.getDatabasePath("$DB_NAME-shm")
-            val attachmentsDir = File(context.filesDir, DOCUMENTS_DIR).apply { if (!exists()) mkdirs() }
-
-            // 3. Extrair conteúdo do ZIP
+        // 5. Extrair conteúdo do ZIP para os destinos finais
+        try {
             ZipFile(info.file).use { zip ->
                 val entries = zip.entries()
                 while (entries.hasMoreElements()) {
@@ -234,10 +262,34 @@ class BackupUseCase @Inject constructor(
                 }
             }
 
+            // Sucesso — eliminar pasta temporária de salvaguarda
+            tempBackupDir.deleteRecursively()
             BackupResult.Success()
         } catch (e: Exception) {
-            Log.e("BackupUseCase", "Erro ao restaurar backup", e)
-            BackupResult.Error("Erro ao restaurar backup: ${e.message}")
+            Log.e("BackupUseCase", "Erro durante a extração do restauro. A iniciar rollback...", e)
+
+            // 6. Rollback: restaurar ficheiros originais da pasta temporária
+            try {
+                val backupDbFile = File(tempDbDir, dbFile.name)
+                val backupDbWal = File(tempDbDir, dbWal.name)
+                val backupDbShm = File(tempDbDir, dbShm.name)
+
+                if (backupDbFile.exists()) backupDbFile.copyTo(dbFile, overwrite = true)
+                if (backupDbWal.exists()) backupDbWal.copyTo(dbWal, overwrite = true)
+                if (backupDbShm.exists()) backupDbShm.copyTo(dbShm, overwrite = true)
+
+                if (tempAttachmentsDir.exists()) {
+                    tempAttachmentsDir.listFiles()?.forEach { attachment ->
+                        if (attachment.isFile) attachment.copyTo(File(attachmentsDir, attachment.name), overwrite = true)
+                    }
+                }
+            } catch (rollbackEx: Exception) {
+                Log.e("BackupUseCase", "Erro crítico no rollback", rollbackEx)
+            } finally {
+                tempBackupDir.deleteRecursively()
+            }
+
+            BackupResult.Error("Erro ao restaurar backup: ${e.message}. Os dados originais foram restaurados.")
         }
     }
 
@@ -252,15 +304,19 @@ class BackupUseCase @Inject constructor(
      * Partilha um ficheiro de backup (.zip) via FileProvider e Intent.ACTION_SEND.
      */
     fun partilharBackup(file: File) {
-        val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "application/zip"
-            putExtra(Intent.EXTRA_STREAM, uri)
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        try {
+            val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "application/zip"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            val chooser = Intent.createChooser(intent, "Exportar Backup")
+            chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(chooser)
+        } catch (e: Exception) {
+            Log.e("BackupUseCase", "Erro ao partilhar backup", e)
         }
-        val chooser = Intent.createChooser(intent, "Exportar Backup")
-        chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(chooser)
     }
 
     private fun lerInformacaoBackup(file: File): BackupInfo? {

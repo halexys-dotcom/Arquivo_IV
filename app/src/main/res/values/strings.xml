@@ -10,7 +10,7 @@
 
     <!-- Settings / About -->
     <string name="settings_export">Exportar Dados</string>
-    <string name="settings_backups">Cópia de Segurança (Backups)</string>
+    <string name="settings_backups">Cópia de Segurança</string>
     <string name="settings_about">Sobre</string>
     <string name="settings_about_description">Aplicação independente desenvolvida por Hugo Correia para arquivamento e consulta de faturas de fornecedores.</string>
     <string name="settings_about_slogan">O seu arquivo digital de faturas</string>
